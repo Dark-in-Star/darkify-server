@@ -51,16 +51,6 @@ cd Darkify-Server
 yarn install
 ```
 
-### 3. Setup environment variables
-
-Create a `.env` file:
-
-```ini
-CLIENT_ID=your_spotify_client_id
-CLIENT_SECRET=your_spotify_client_secret
-PORT=5000
-```
-
 ### 4. Run in development
 
 ```bash
