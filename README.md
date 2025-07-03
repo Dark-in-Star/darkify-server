@@ -3,7 +3,7 @@
 A Spotify OAuth 2.0 authentication backend built using **Node.js**, **TypeScript**, and **Express**.
 
 <p align="center">
-  <img src="/logo.png" alt="Darkify Logo" width="300" />
+  <img src="public/logo.png" alt="Darkify Logo" width="300" />
 </p>
 
 ## 🚀 Features
