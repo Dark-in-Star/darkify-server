@@ -12,9 +12,9 @@ import errorHandlers from "./handlers/error.handler";
 import routeHandlers  from "./handlers/route.handler";
 
 
-export const app = express();
+export const server = express();
 
-app.use(
+server.use(
   cookieSession({
     name: "test-auth",
     keys: [
@@ -25,15 +25,15 @@ app.use(
   })
 );
 
-app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
-app.use(passport.initialize());
-app.use(passport.session());
+server.use(cookieParser(process.env.COOKIE_SECRET_KEY));
+server.use(passport.initialize());
+server.use(passport.session());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true, parameterLimit: 1000000 }));
-app.use(compression());
+server.use(express.json());
+server.use(express.urlencoded({ extended: true, parameterLimit: 1000000 }));
+server.use(compression());
 
-app.use(
+server.use(
   cors({
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -42,9 +42,9 @@ app.use(
   })
 );
 
-app.use(helmet());
+server.use(helmet());
 
-app.use(
+server.use(
   morgan(
     "[:date[web]] :method :url :status :response-time ms - :res[content-length]",
     {
@@ -56,10 +56,10 @@ app.use(
 );
 
 // API and static
-app.use("/api", api);
+server.use("/", api);
 
 // Catch-all & error handling
-app.use(routeHandlers);
-app.use(errorHandlers);
+server.use(routeHandlers);
+server.use(errorHandlers);
 
-export default app;
+export default server;

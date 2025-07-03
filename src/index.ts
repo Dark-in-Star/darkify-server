@@ -1,12 +1,12 @@
 import "dotenv/config";
 import http from "http";
-import {app} from "./server";
+import {server} from "./server";
 import logger from "./utils/logger";
 
 const port = process.env.PORT || 5000;
-app.set("port", port);
+server.set("port", port);
 
-const server = http.createServer(app);
+const httpServer = http.createServer(server);
 
 process.on("uncaughtException", (err: Error) => {
   logger.error("Uncaught Exception:", err);
@@ -35,11 +35,12 @@ function onError(error: NodeJS.ErrnoException) {
 }
 
 function onListening() {
-  const addr = server.address();
+  const addr = httpServer.address();
+
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`;
   logger.info(`Server listening at ${bind} in ${process.env.ENV} mode`);
 }
 
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+httpServer.listen(port);
+httpServer.on("error", onError);
+httpServer.on("listening", onListening);
