@@ -4,18 +4,13 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import morgan from "morgan";
-import path from "path";
 import helmet from "helmet";
 import passport from "passport";
-import { fileURLToPath } from "url";
 import api from "./main";
 import logger from "./utils/logger";
 import errorHandlers from "./handlers/error.handler";
 import routeHandlers  from "./handlers/route.handler";
 
-// Get __dirname for ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export const app = express();
 
@@ -62,7 +57,6 @@ app.use(
 
 // API and static
 app.use("/api", api);
-app.use(express.static(path.join(__dirname, "../public")));
 
 // Catch-all & error handling
 app.use(routeHandlers);
