@@ -1,6 +1,6 @@
 import "dotenv/config";
 import http from "http";
-import {server} from "./server";
+import { server } from "./server";
 import logger from "./utils/logger";
 
 const port = process.env.PORT || 5000;
@@ -8,17 +8,13 @@ server.set("port", port);
 
 const httpServer = http.createServer(server);
 
-process.on("uncaughtException", (err: Error) => {
-  logger.error("Uncaught Exception:", err);
-  process.exit(1);
+// Start listening
+httpServer.listen(port, () => {
+  logger.info(`Server listening on port ${port} in ${process.env.ENV} mode`);
 });
 
-process.on("unhandledRejection", (err: unknown) => {
-  logger.error("Unhandled Rejection:", err);
-  process.exit(1);
-});
-
-function onError(error: NodeJS.ErrnoException) {
+// Handle startup errors
+httpServer.on("error", (error: NodeJS.ErrnoException) => {
   if (error.syscall !== "listen") throw error;
 
   const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
@@ -32,15 +28,15 @@ function onError(error: NodeJS.ErrnoException) {
     default:
       throw error;
   }
-}
+});
 
-function onListening() {
-  const addr = httpServer.address();
+// Global error handling
+process.on("uncaughtException", (err: Error) => {
+  logger.error("Uncaught Exception:", err);
+  process.exit(1);
+});
 
-  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`;
-  logger.info(`Server listening at ${bind} in ${process.env.ENV} mode`);
-}
-
-httpServer.listen(port);
-httpServer.on("error", onError);
-httpServer.on("listening", onListening);
+process.on("unhandledRejection", (err: unknown) => {
+  logger.error("Unhandled Rejection:", err);
+  process.exit(1);
+});
